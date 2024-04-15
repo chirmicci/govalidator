@@ -1683,7 +1683,7 @@ func typeCheck(v reflect.Value, t reflect.StructField, o reflect.Value, options 
 					if validatefunc, ok := TagMap[validator]; ok {
 						delete(options, validatorSpec)
 
-						field := string(v.Bytes()) // make value into string, then validate with regex
+						field := fmt.Sprintf("%s", v.Interface()) // make value into string, then validate with regex
 						if result := validatefunc(field); !result && !negate || result && negate {
 							if customMsgExists {
 								return false, Error{t.Name, TruncatingErrorf(validatorStruct.customErrorMessage, field, validator), customMsgExists, stripParams(validatorSpec), []string{}}
