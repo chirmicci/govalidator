@@ -3676,6 +3676,16 @@ func TestValidateStructParamValidatorUUID(t *testing.T) {
 	if err == nil {
 		t.Errorf("Test failed: nil")
 	}
+
+	type Test4 struct {
+		Uuid [16]uint8 `valid:"required"`
+	}
+	test4Ok := &Test4{Uuid: [16]byte{118, 208, 25, 176, 0, 242, 69, 14, 160, 24, 31, 124, 43, 244, 45, 158}}
+
+	_, err = ValidateStruct(test4Ok)
+	if err != nil {
+		t.Errorf("Test failed: %s", err)
+	}
 }
 
 func TestValidatorIncludedInError(t *testing.T) {

@@ -1667,7 +1667,7 @@ func typeCheck(v reflect.Value, t reflect.StructField, o reflect.Value, options 
 		for i := 0; i < v.Len(); i++ {
 			var resultItem bool
 			var err error
-			if v.Index(i).Kind() == reflect.Uint8 && v.Len() == 36 {
+			if v.Index(i).Kind() == reflect.Uint8 && (v.Len() == 36 || v.Len() == 16) {
 				for _, validatorSpec := range optionsOrder {
 					validatorStruct := options[validatorSpec]
 					var negate bool
