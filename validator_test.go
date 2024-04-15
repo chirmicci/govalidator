@@ -3646,6 +3646,38 @@ func TestJSONValidator(t *testing.T) {
 	}
 }
 
+func TestValidateStructParamValidatorUUID(t *testing.T) {
+	type Test1 struct {
+		Uuid []uint8 `valid:"uuidv4,required"`
+	}
+	test1Ok := &Test1{Uuid: []byte("76d019b0-00f2-450e-a018-1f7c2bf42d9e")}
+
+	_, err := ValidateStruct(test1Ok)
+	if err != nil {
+		t.Errorf("Test failed: %s", err)
+	}
+
+	type Test2 struct {
+		Uuid []uint8 `valid:"uuidv4"`
+	}
+	test2Ok := &Test2{Uuid: []byte("")}
+
+	_, err = ValidateStruct(test2Ok)
+	if err != nil {
+		t.Errorf("Test failed: %s", err)
+	}
+
+	type Test3 struct {
+		Uuid []uint8 `valid:"uuidv4"`
+	}
+	test3NotOk := &Test3{Uuid: []byte("b70092c3-0252-d940-19b0-af6b107cda48")}
+
+	_, err = ValidateStruct(test3NotOk)
+	if err == nil {
+		t.Errorf("Test failed: nil")
+	}
+}
+
 func TestValidatorIncludedInError(t *testing.T) {
 	post := Post{
 		Title:    "",
